@@ -1,0 +1,8 @@
+# Ignore everything
+/*
+
+# But not these files/folders
+!ext/
+!ext/wereldfietser/
+!ext/wereldfietser/**
+
