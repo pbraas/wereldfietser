@@ -1,0 +1,27 @@
+<!-- INCLUDE overall_header.html -->
+
+<div class="panel">
+    <div class="inner">
+        <h2 class="merge-title">{L_MERGE_ACCOUNTS_TITLE}</h2>
+        <p>{L_MERGE_ACCOUNTS_EXPLAIN}</p>
+
+        <form id="merge_accounts" method="post" action="{S_MERGE_ACTION}">
+            <fieldset class="fields2">
+                <dl>
+                    <dt><label for="wereldfietser_id_confirm">{L_WERELDFIETSER_ID}:</label></dt>
+                    <dd><input type="text" tabindex="1" id="wereldfietser_id_confirm" name="wereldfietser_id_confirm" size="25" value="{WERELDFIETSER_ID}" class="inputbox autowidth" title="{L_WERELDFIETSER_ID}" readonly="readonly" /></dd>
+                </dl>
+                <dl>
+                    <dt><label for="password">{L_YOUR_PASSWORD}:</label></dt>
+                    <dd><input type="password" tabindex="2" id="password" name="password" size="25" class="inputbox autowidth" title="{L_YOUR_PASSWORD}" autocomplete="current-password" /></dd>
+                </dl>
+            </fieldset>
+            <fieldset class="submit-buttons">
+                <input type="submit" name="submit" id="submit" class="button1" value="{L_SUBMIT}" tabindex="3" />
+            </fieldset>
+            {S_FORM_TOKEN}
+        </form>
+    </div>
+</div>
+
+<!-- INCLUDE overall_footer.html -->

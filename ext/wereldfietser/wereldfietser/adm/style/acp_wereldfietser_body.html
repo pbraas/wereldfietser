@@ -1,0 +1,33 @@
+{% include 'overall_header.html' %}
+
+<h1>{{ lang('ACP_WERELDFIETSER_TITLE') }}</h1>
+
+{% if S_ERROR %}
+	<div class="errorbox">
+		<h3>{{ lang('WARNING') }}</h3>
+		<p>{{ ERROR_MSG }}</p>
+	</div>
+{% endif %}
+
+<form id="wereldfietser_wereldfietser_acp" name="wereldfietser_wereldfietser_acp" method="post" action="{{ U_ACTION }}">
+
+	<fieldset>
+		<legend>{{ lang('SETTINGS') }}</legend>
+		<dl>
+			<dt><label for="wereldfietser_wereldfietser_goodbye">{{ lang('ACP_WERELDFIETSER_GOODBYE') ~ lang('COLON') }}</label></dt>
+			<dd>
+				<label><input type="radio" class="radio" name="wereldfietser_wereldfietser_goodbye" value="1"{% if WERELDFIETSER_WERELDFIETSER_GOODBYE %} checked="checked"{% endif %}> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="wereldfietser_wereldfietser_goodbye" value="0"{% if not WERELDFIETSER_WERELDFIETSER_GOODBYE %} checked="checked"{% endif %}> {{ lang('NO') }}</label>
+			</dd>
+		</dl>
+	</fieldset>
+
+	<fieldset class="submit-buttons">
+		<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}">&nbsp;
+		<input class="button2" type="submit" id="preview" name="preview" value="{{ lang('PREVIEW') }}">
+		{{ S_FORM_TOKEN }}
+	</fieldset>
+
+</form>
+
+{% include 'overall_footer.html' %}

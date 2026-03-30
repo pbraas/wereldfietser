@@ -1,0 +1,84 @@
+imports:
+    - { resource: parameters.yml }
+
+services:
+    auth.provider.api:
+        class: wereldfietser\wereldfietser\auth\provider\api
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@config'
+            - '@language'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            - '@auth.provider.db'
+            - '@log' # Added this line
+        tags:
+            - { name: auth.provider }
+
+    wereldfietser.wereldfietser.controller.api:
+        class: wereldfietser\wereldfietser\controller\api_controller
+        arguments:
+            - '@auth'
+            - '@request'
+            - '@user'
+
+    wereldfietser.wereldfietser.controller.main:
+        class: wereldfietser\wereldfietser\controller\main_controller
+        arguments:
+            - '@config'
+            - '@controller.helper'
+            - '@template'
+            - '@language'
+            - '@user'
+
+    wereldfietser.wereldfietser.controller.acp:
+        class: wereldfietser\wereldfietser\controller\acp_controller
+        arguments:
+            - '@config'
+            - '@language'
+            - '@log'
+            - '@request'
+            - '@template'
+            - '@user'
+
+    wereldfietser.wereldfietser.controller.merge:
+        class: wereldfietser\wereldfietser\controller\merge_controller
+        arguments:
+            - '@config'
+            - '@dbal.conn'
+            - '@request'
+            - '@template'
+            - '@user'
+            - '@log'
+            - '@passwords.manager'
+            - '@controller.helper'
+            - '@language'
+            - '%core.php_ext%'
+            - '@profilefields.manager'
+            - '%core.root_path%'
+
+    wereldfietser.wereldfietser.service:
+        class: wereldfietser\wereldfietser\service
+        arguments:
+            - '@user'
+            - '%wereldfietser.wereldfietser.tables.wereldfietser_table%'
+
+    wereldfietser.wereldfietser.listener:
+        class: wereldfietser\wereldfietser\event\main_listener
+        arguments:
+            - '@language'
+            - '@controller.helper'
+            - '@template'
+            - '%core.php_ext%'
+        tags:
+            - { name: event.listener }
+
+    wereldfietser.wereldfietser.event.listener:
+        class: wereldfietser\wereldfietser\event\listener
+        arguments:
+            - '@controller.helper'
+            - '@template'
+            - '@user'
+        tags:
+            - { name: event.listener }

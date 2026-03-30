@@ -1,0 +1,12 @@
+{% include 'overall_header.html' %}
+
+<h2>{{ WERELDFIETSER_MESSAGE }}</h2>
+<form method="post" action="inlog is gelukt">
+    <label for="username">Gebruikersnaam of emailadres:</label><br>
+    <input type="text" id="username" name="username"><br>
+    <label for="password">Wachtwoord zoals wordt gebruikt op wereldfietser.nl:</label><br>
+    <input type="password" id="password" name="password"><br>
+    <input type="submit" value="Inloggen">
+</form>
+
+{% include 'overall_footer.html' %}

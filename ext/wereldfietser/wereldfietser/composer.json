@@ -1,0 +1,32 @@
+{
+    "name": "wereldfietser/wereldfietser",
+    "type": "phpbb-extension",
+    "description": "wereldfietser",
+    "homepage": "https://www.wereldfietser.nl",
+    "version": "1.0.0-dev",
+    "time": "2025-06-30",
+    "license": "GPL-2.0-only",
+    "authors": [
+        {
+            "name": "Phillip Braas",
+            "email": "beheer@wereldfietser.nl",
+            "homepage": "https://www.wereldfietser.nl",
+            "role": "systeembeheerder"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.3",
+        "composer/installers": "~1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "wereldfietser\\wereldfietser\\": ""
+        }
+    },
+    "extra": {
+        "display-name": "Wereldfietser leden inlog",
+        "soft-require": {
+            "phpbb/phpbb": ">=3.3.0,<4.0.0@dev"
+        }
+    }
+}

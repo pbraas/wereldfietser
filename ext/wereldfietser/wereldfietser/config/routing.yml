@@ -1,0 +1,3 @@
+wereldfietser_wereldfietser_merge_controller:
+    path: /account-merge
+    defaults: { _controller: wereldfietser.wereldfietser.controller.merge:handle }

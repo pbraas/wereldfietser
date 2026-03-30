@@ -1,0 +1,2 @@
+parameters:
+    wereldfietser.wereldfietser.tables.wereldfietser_table: '%core.table_prefix%wereldfietser_wereldfietser_table'
