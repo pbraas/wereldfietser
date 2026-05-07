@@ -1,0 +1,42 @@
+<?php
+/**
+*
+* WF Text Adjustments extension for the phpBB Forum Software package.
+*
+*/
+
+/**
+* DO NOT CHANGE
+*/
+if (!defined('IN_PHPBB'))
+{
+	exit;
+}
+
+if (empty($lang) || !is_array($lang))
+{
+	$lang = array();
+}
+
+// DEVELOPERS PLEASE NOTE
+//
+// All language files should use UTF-8 as their encoding and the files must not contain a BOM.
+//
+// Placeholders can now contain order information, e.g. instead of
+// 'Page %s of %s' you can (and should) write 'Page %1$s of %2$s', this allows
+// translators to re-order the output of data while ensuring it remains correct
+//
+// You do not need this where single placeholders are used, e.g. 'Message %d' is fine
+// equally where a string contains only two placeholders which are used to wrap text
+// in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
+//
+// Some characters you may want to copy&paste:
+// ’ » “ ” …
+//
+
+$lang = array_merge($lang, array(
+  'TERMS_OF_USE_CONTENT'  => 'Door het bez0eken van het forum van De Wereldfietser (hierna genoemd “wij”, “ons”, “onze”, “%1$s”, “%2$s”), ga je automatisch akkoord met de voorwaarden. Als je niet akkoord gaat met deze voorwaarden, bezoek of gebruik dit forum dan niet langer. We hebben het recht om de voorwaarden op ieder moment te wijzigen en zullen ons best doen om je hiervan tijdig op de hoogte te brengen, het is echter aan te raden om zelf de voorwaarden regelmatig te controleren op wijzigingen. Ga je niet akkoord met deze wijzigingen, maak dan niet langer gebruik van dit forum. Blijf je gebruik maken van het forum van De Wereldfietser, dan ga je automatisch akkoord met de wijzigingen en of toevoegingen.<br />
+  <br />
+  Je verklaart geen berichten te plaatsen die indruisen tegen de voorwaarden. Het plaatsen van dergelijke berichten kan ertoe leiden dat je met onmiddellijke ingang en permanent wordt verbannen van dit forum. Tevens kan je provider worden ingelicht. De IP-adressen van alle berichten worden opgeslagen om deze voorwaarden te kunnen waarborgen. Je gaat er mee akkoord dat De Wereldfietser het recht heeft om ieder onderwerp te verwijderen, te wijzigen, te sluiten of te verplaatsen wanneer zij dit nodig acht. Als gebruiker ga je ermee akkoord, dat de informatie die je bij ons invoert wordt opgeslagen in een database. Hoewel deze informatie niet aan een derde partij zal worden verstrekt zónder je toestemming, kan De Wereldfietser niet verantwoordelijk worden gehouden voor een hackpoging die ertoe kan leiden dat de gegevens vrijkomen.
+  ',
+));

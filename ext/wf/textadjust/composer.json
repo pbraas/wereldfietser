@@ -1,0 +1,30 @@
+{
+    "name": "wf/textadjust",
+    "type": "phpbb-extension",
+    "description": "UI text adjustments for wereldfietser.nl",
+    "homepage": "",
+    "version": "1.0.0",
+    "time": "2018-10-08",
+    "license": "GPL-2.0-only",
+    "authors": [
+        {
+            "name": "",
+            "email": "",
+            "homepage": "",
+            "role": ""
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "composer/installers": "~1.0"
+    },
+    "extra": {
+        "display-name": "Wereldfietser Text Adjustments",
+        "soft-require": {
+            "phpbb/phpbb": ">=3.1.4,<3.2.0@dev"
+        }
+    },
+    "require-dev": {
+        "phing/phing": "2.4.*"
+    }
+}

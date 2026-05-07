@@ -1,0 +1,13 @@
+services:
+    senky.userstatistics.listener:
+        class: senky\userstatistics\event\listener
+        arguments:
+            - '@cache.driver'
+            - '@dbal.conn'
+            - '@template'
+            - '@user'
+            - '@request'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+        tags:
+            - { name: event.listener }

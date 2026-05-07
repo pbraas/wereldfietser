@@ -1,0 +1,112 @@
+<!-- INCLUDE overall_header.html -->
+
+<a id="maincontent"></a>
+
+<h1>{L_SETTINGS}</h1>
+<!-- IF S_ERROR -->
+    <div class="errorbox">
+            <h3>{L_WARNING}</h3>
+            <p>{ERROR_MSG}</p>
+    </div>
+<!-- ENDIF -->
+<form id="config" method="post" action="{U_ACTION}">
+    <fieldset>
+        {L_FPB_CRON_FREQUENCY}{L_COLON} <input type="number" name="cron_frequency" value="{CRON_FREQUENCY}" /> <input class="button1" type="submit" name="set_config" value="{L_SUBMIT}" />
+        {S_FORM_TOKEN}
+    </fieldset>
+</form>
+<!-- IF FPB_LOCKED -->
+<form id="reset_lock" method="post" action="{U_ACTION}">
+    <fieldset>
+        {L_FPB_LOCKED_EXPLAIN}{L_COLON} <input class="button1" type="submit" name="reset_lock" value="{L_SUBMIT}" />
+        {S_FORM_TOKEN}
+    </fieldset>
+</form>
+<!-- ELSE -->
+<form id="run_all" method="post" action="{U_ACTION}">
+    <fieldset>
+        {L_FPB_FETCH_ALL_FEEDS}{L_COLON} <input class="button1" type="submit" name="run_all" value="{L_SUBMIT}" />
+        {S_FORM_TOKEN}
+    </fieldset>
+</form>
+<!-- ENDIF -->
+<h2>{L_FPB_FEEDS}</h2>
+<form id="add_source" method="post" action="{U_ADD_ACTION}">
+	<fieldset>
+		{L_FPB_ADD_FEED}{L_COLON} <input type="text" name="add_feed" value="" /> <input class="button1" type="submit" name="submit" value="{L_SUBMIT}" />
+		<input type="hidden" name="add" value="1" />
+		{S_FORM_TOKEN}
+	</fieldset>
+</form>
+<p>{L_FPB_ACP_SETTINGS_EXPLAIN}</p>
+<dl>
+	<dt><label>{L_FPB_FEED_URL}{L_COLON}</label></dt><dd>{L_FPB_FEED_URL_EXPLAIN}</dd>
+	<dt><label>{L_FPB_FEED_TYPE}{L_COLON}</label></dt><dd>{L_FPB_FEED_TYPE_EXPLAIN}</dd>
+	<dt><label>{L_FPB_PREFIX}{L_COLON}</label></dt><dd>{L_FPB_PREFIX_EXPLAIN}</dd>
+	<dt><label>{L_FPB_ACP_FORUM_ID}{L_COLON}</label></dt><dd>{L_FPB_ACP_FORUM_ID_EXPLAIN}</dd>
+	<dt><label>{L_FPB_USER_ID}{L_COLON}</label></dt><dd>{L_FPB_USER_ID_EXPLAIN}</dd>
+	<dt><label>{L_FPB_TEXTLIMIT}{L_COLON}</label></dt><dd>{L_FPB_TEXTLIMIT_EXPLAIN}</dd>
+	<dt><label>{L_FPB_TIMEOUT}{L_COLON}</label></dt><dd>{L_FPB_TIMEOUT_EXPLAIN}</dd>
+	<dt><label>{L_FPB_CURDATE}{L_COLON}</label></dt><dd>{L_FPB_CURDATE_EXPLAIN}</dd>
+	<dt><label>{L_FPB_APPEND_LINK}{L_COLON}</label></dt><dd>{L_FPB_APPEND_LINK_EXPLAIN}</dd>
+</dl>
+<br>
+<form id="manage_feeds" method="post" action="{U_MANAGE_ACTION}">
+					                                        
+	<table>
+		<col class="col1" /><col class="col2" /><col class="col2" /><col class="col2" /><col class="col2" /><col class="col2" /><col class="col2" /><col class="col2" /><col class="col2" /><col class="col2" />
+	<thead>
+	<tr>
+		<th>#</th>
+		<th style="width: 25%">{L_FPB_FEED_URL}</th>
+		<th>{L_FPB_FEED_TYPE}</th>                
+		<th>{L_FPB_PREFIX}</th>
+		<th>{L_FPB_ACP_FORUM_ID}</th>
+		<th>{L_FPB_USER_ID}</th>
+		<th>{L_FPB_TEXTLIMIT}</th>
+		<th>{L_FPB_TIMEOUT}</th>
+		<th>{L_FPB_CURDATE}</th>
+		<th>{L_FPB_APPEND_LINK}</th>
+		<th>{L_ACTION}</th>
+	</tr>
+	</thead>
+	<tbody>
+	<!-- IF .feeds -->
+		<!-- BEGIN feeds -->
+		<tr>
+			<td>{feeds.ID}</td>
+			<td><input type="text" name="{feeds.ID}_url" value="{feeds.URL}" style="width: 98%" /></td>
+			<td style="text-align: center;">
+                            <select name="{feeds.ID}_type">
+                                <option value="rss"<!-- IF feeds.TYPE eq "rss" --> selected="selected"<!-- ENDIF -->>{L_FPB_TYPE_RSS}</option>
+				<option value="atom"<!-- IF feeds.TYPE eq "atom" --> selected="selected"<!-- ENDIF -->>{L_FPB_TYPE_ATOM}</option>
+				<option value="rdf"<!-- IF feeds.TYPE eq "rdf" --> selected="selected"<!-- ENDIF -->>{L_FPB_TYPE_RDF}</option>
+                            </select>
+                        </td>
+			<td><input type="text" name="{feeds.ID}_prefix" value="{feeds.PREFIX}" style="width: 98%" /></td>
+			<td style="text-align: center;"><select name="{feeds.ID}_forum_id"><option value="0">{L_DISABLED}</option>{feeds.S_FORUMS}</select></td>
+			<td style="text-align: center;"><input type="number" min="0" name="{feeds.ID}_user_id" value="{feeds.USER_ID}" /></td>
+			<td style="text-align: center;"><input type="number" min="0" name="{feeds.ID}_textlimit" value="{feeds.TEXTLIMIT}" /></td>
+			<td style="text-align: center;"><input type="number" min="0" name="{feeds.ID}_timeout" value="{feeds.TIMEOUT}" /></td>
+			<td style="text-align: center;"><label><input type="checkbox" class="radio" name="{feeds.ID}_curdate"<!-- IF feeds.S_CURDATE --> checked="checked"<!-- ENDIF --> /> {L_FPB_CURDATE}</label></td>
+			<td style="text-align: center;"><label><input type="checkbox" class="radio" name="{feeds.ID}_append_link"<!-- IF feeds.S_APPEND_LINK --> checked="checked"<!-- ENDIF --> /> {L_FPB_APPEND_LINK}</label></td>
+			<td style="text-align: center;"><a href="{feeds.U_DELETE}" data-ajax="row_delete">{ICON_DELETE}</a></td>
+		</tr>
+		<!-- END feeds -->
+	<!-- ELSE -->
+		<tr>
+			<td colspan="5" class="row3">{L_FPB_NO_FEEDS}</td>
+		</tr>
+	<!-- ENDIF -->
+	</tbody>
+	</table>
+	<!-- IF .feeds -->
+        <fieldset class="quick" style="text-align: inherit">
+		<input class="button1" type="submit" name="submit" value="{L_SUBMIT}" />
+	</fieldset>
+	<!-- ENDIF -->
+
+	{S_FORM_TOKEN}
+
+</form>
+<!-- INCLUDE overall_footer.html -->

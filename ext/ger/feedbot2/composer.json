@@ -1,0 +1,27 @@
+{
+    "name": "ger/feedbot2",
+    "type": "phpbb-extension",
+    "description": "Fork from Feed Post Bot to keep posts in sync with external feed",
+    "homepage": "",
+    "version": "1.0.0",
+    "time": "2018-12-07",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Ger",
+            "email": "",
+            "homepage": "https://github.com/GerB",
+            "role": ""
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "ext-simplexml" : "*"
+    },
+    "extra": {
+        "display-name": "Feed Bot 2 Special edition",
+        "soft-require": {
+            "phpbb/phpbb": ">=3.2.2"
+        }
+    }
+}

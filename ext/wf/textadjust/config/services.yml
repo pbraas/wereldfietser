@@ -1,0 +1,5 @@
+services:
+    wf.textadjust.listener:
+        class: wf\textadjust\event\main_listener
+        tags:
+            - { name: event.listener }

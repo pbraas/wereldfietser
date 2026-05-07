@@ -1,0 +1,9 @@
+services:
+    threedi.exir.listener:
+        class: threedi\exir\event\main_listener
+        arguments:
+            - '@config'
+            - '%core.root_path%'
+
+        tags:
+            - { name: event.listener }

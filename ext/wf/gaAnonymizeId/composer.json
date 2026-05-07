@@ -1,0 +1,30 @@
+{
+	"name": "wf/gaAnonymizeId",
+	"type": "phpbb-extension",
+	"description": "An add-on for phpBB's Google Analytics extension that enables UserId anonymization.",
+	"version": "1.0.0-dev",
+	"keywords": ["phpbb", "extension", "google", "analytics"],
+	"license": "GPL-2.0",
+	"authors": [
+		{
+			"name": "",
+			"email": "",
+			"homepage": "",
+			"role": ""
+		}
+	],
+	"require": {
+		"php": ">=5.3.3",
+		"composer/installers": "~1.0"
+	},
+	"require-dev": {
+		"phing/phing": "2.4.*",
+		"phpbb/epv": "dev-master"
+	},
+	"extra": {
+		"display-name": "Google Analytics - Anonymize Id",
+		"soft-require": {
+			"phpbb/phpbb": ">=3.1.0,<3.2.*@dev"
+		}
+	}
+}

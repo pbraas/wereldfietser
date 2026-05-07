@@ -1,0 +1,60 @@
+services:
+    acme.aisearch.controller.main:
+        class: acme\aisearch\controller\main_controller
+        arguments:
+            - '@auth'
+            - '@controller.helper'
+            - '@language'
+            - '@request'
+            - '@template'
+            - '@user'
+            - '@acme.aisearch.service.search_client'
+            - '@config'
+    acme.aisearch.controller.acp:
+        class: acme\aisearch\controller\acp_controller
+        arguments:
+            - '@config'
+            - '@dbal.conn'
+            - '@language'
+            - '@log'
+            - '@request'
+            - '@template'
+            - '@user'
+            - '@acme.aisearch.service.search_client'
+            - '@acme.aisearch.service.index_client'
+            - '@acme.aisearch.cron.task.queue_worker'
+            - '%core.table_prefix%aisearch_queue'
+            - '%core.table_prefix%posts'
+    acme.aisearch.service.search_client:
+        class: acme\aisearch\service\search_client
+        arguments:
+            - '@config'
+            - '@log'
+    acme.aisearch.service.index_client:
+        class: acme\aisearch\service\index_client
+        arguments:
+            - '@config'
+            - '@log'
+    acme.aisearch.cron.task.queue_worker:
+        class: acme\aisearch\cron\task\queue_worker
+        arguments:
+            - '@config'
+            - '@dbal.conn'
+            - '@acme.aisearch.service.index_client'
+            - '%core.table_prefix%aisearch_queue'
+            - '%core.table_prefix%posts'
+            - '%core.table_prefix%topics'
+        calls:
+            - [set_name, ['cron.task.acme.aisearch.queue_worker']]
+        tags:
+            - { name: cron.task }
+    acme.aisearch.listener:
+        class: acme\aisearch\event\main_listener
+        arguments:
+            - '@controller.helper'
+            - '@dbal.conn'
+            - '@language'
+            - '@template'
+            - '%core.table_prefix%aisearch_queue'
+        tags:
+            - { name: event.listener }

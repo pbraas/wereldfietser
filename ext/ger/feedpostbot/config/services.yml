@@ -1,0 +1,24 @@
+services:
+    ger.feedpostbot.classes.driver:
+        class: ger\feedpostbot\classes\driver
+        arguments:
+            - '@config'
+            - '@config_text'
+            - '@user'
+            - '@language'
+            - '@auth'
+            - '@dbal.conn'
+            - '@log'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            - '@dispatcher'
+    
+    ger.feedpostbot.cron.task.feedpostbot_cron:
+        class: ger\feedpostbot\cron\task\feedpostbot_cron
+        arguments:
+            - '@config'
+            - '@ger.feedpostbot.classes.driver'
+        calls:
+            - [set_name, [cron.task.feedpostbot_cron]]
+        tags:
+            - { name: cron.task }

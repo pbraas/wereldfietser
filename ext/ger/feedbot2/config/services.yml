@@ -1,0 +1,32 @@
+imports:
+    - { resource: parameters.yml }
+    
+services:
+    ger.feedbot2.classes.driver:
+        class: ger\feedbot2\classes\driver
+        arguments:
+            - '@config'
+            - '@config_text'
+            - '@user'
+            - '@language'
+            - '@auth'
+            - '@dbal.conn'
+            - '@log'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            - '%ger.feedbot2.tables.track_table%'
+            - '@dispatcher'
+    ger.feedbot2.listener:
+        class: ger\feedbot2\event\main_listener
+        tags:
+            - { name: event.listener }
+            
+    ger.feedbot2.cron.task.feedbot2_cron:
+        class: ger\feedbot2\cron\task\feedbot2_cron
+        arguments:
+            - '@config'
+            - '@ger.feedbot2.classes.driver'
+        calls:
+            - [set_name, [cron.task.feedbot2_cron]]
+        tags:
+            - { name: cron.task }

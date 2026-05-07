@@ -1,0 +1,24 @@
+{% INCLUDE 'overall_header.html' %}
+
+<h1>{{ lang('ACP_CK_IT_TITLE') }}</h1>
+
+<form id="acp_board" method="post" action="{{ U_ACTION }}">
+
+	<fieldset>
+		<legend>{{ lang('SETTINGS') }}</legend>
+		<dl>
+			<dt><label for="ck_it_quality">{{ lang('ACP_CK_IT_QUALITY') }}{{ lang('COLON') }}</label><br/><span>{{ lang('ACP_CK_IT_QUALITY_EXPLAIN') }}</span></dt>
+			<dd><input type="number" id="ck_it_quality_id" min="0" max="100" step="any" name="ck_it_quality" value="{CK_IT_QUALITY}" /></dd>
+
+		</dl>
+	</fieldset>
+
+	<fieldset class="submit-buttons">
+		<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />&nbsp;
+		<input class="button2" type="submit" name="preview" value="{{ lang('PREVIEW') }}" />
+		{{ S_FORM_TOKEN }}
+	</fieldset>
+
+</form>
+
+{% INCLUDE 'overall_footer.html' %}

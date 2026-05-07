@@ -1,0 +1,2 @@
+parameters:
+    ger.feedbot2.tables.track_table: '%core.table_prefix%feedbot2_posts'

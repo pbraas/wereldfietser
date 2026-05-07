@@ -1,0 +1,33 @@
+{
+    "name": "canonknipser/imthumbnailer",
+    "type": "phpbb-extension",
+    "description": "creates thumbnails for image attachments using ImageMagick php libraries",
+    "homepage": "http://canonknipser.com",
+    "version": "1.0.1",
+    "time": "2018-12-23",
+    "license": "GPL-2.0-only",
+    "authors": [
+        {
+            "name": "canonknipser",
+            "email": "admin@canonknipser.com",
+            "homepage": "http://canonknipser.com",
+            "role": "Lead Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.6.0",
+        "composer/installers": "~1.0.0",
+        "phpbb/phpbb": ">=3.2.4,<3.3.0@dev"
+    },
+    "extra": {
+        "display-name": "ImageMagick Thumbnailer",
+        "soft-require": {
+            "phpbb/phpbb": ">=3.2.4,<3.3.0@dev"
+        },
+        "version-check": {
+            "host": "www.phpbb.com",
+            "directory": "/customise/db/extension/imagemagick_thumbnailer",
+            "filename": "version_check"
+        }
+    }
+}

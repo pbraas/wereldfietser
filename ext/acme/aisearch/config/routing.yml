@@ -1,0 +1,3 @@
+acme_aisearch_main:
+    path: /ai-search
+    defaults: { _controller: acme.aisearch.controller.main:handle }

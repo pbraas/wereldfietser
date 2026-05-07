@@ -1,0 +1,38 @@
+{% INCLUDE 'overall_header.html' %}
+<h2>{{ lang('AISEARCH_TITLE') }}</h2>
+<form method="get" action="{{ U_AISEARCH }}">
+<fieldset>
+<dl>
+<dt><label for="q">{{ lang('AISEARCH_QUERY_LABEL') }}:</label></dt>
+<dd><input type="text" id="q" name="q" value="{{ AISEARCH_QUERY }}" size="60" /></dd>
+</dl>
+<p><input class="button1" type="submit" value="{{ lang('AISEARCH_SEARCH') }}" /></p>
+</fieldset>
+</form>
+{% if AISEARCH_ERROR %}
+<div class="errorbox">
+<h3>{{ AISEARCH_ERROR }}</h3>
+</div>
+{% endif %}
+{% if loops.result|length %}
+<ul class="topiclist topics">
+{% for result in loops.result %}
+<li>
+<dl>
+<dt>
+{% if result.URL %}
+<a href="{{ result.URL }}">{{ result.TITLE }}</a>
+{% else %}
+{{ result.TITLE }}
+{% endif %}
+</dt>
+<dd>{{ result.SNIPPET }}</dd>
+<dd>Score: {{ result.SCORE }}</dd>
+</dl>
+</li>
+{% endfor %}
+</ul>
+{% elseif AISEARCH_QUERY %}
+<p>{{ lang('AISEARCH_NO_RESULTS') }}</p>
+{% endif %}
+{% INCLUDE 'overall_footer.html' %}

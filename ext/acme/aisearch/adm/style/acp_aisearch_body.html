@@ -1,0 +1,145 @@
+{% INCLUDE 'overall_header.html' %}
+<a id="maincontent"></a>
+<h1>{{ lang('ACP_AISEARCH_TITLE') }}</h1>
+{% if S_ERROR %}
+<div class="errorbox">
+<h3>{{ lang('WARNING') }}</h3>
+<p>{{ ERROR_MSG }}</p>
+</div>
+{% endif %}
+{% if S_AISEARCH_HEALTH_CHECK %}
+<div class="{% if S_AISEARCH_HEALTH_OK %}successbox{% else %}errorbox{% endif %}">
+<p>{{ AISEARCH_HEALTH_MESSAGE }}</p>
+</div>
+{% endif %}
+<form id="acme_aisearch_acp" method="post" action="{{ U_ACTION }}">
+<fieldset>
+<legend>{{ lang('ACP_AISEARCH') }}</legend>
+<dl>
+<dt><label for="acme_aisearch_enabled">{{ lang('ACP_AISEARCH_ENABLED') }}</label></dt>
+<dd><input type="checkbox" id="acme_aisearch_enabled" name="acme_aisearch_enabled" value="1" {% if ACME_AISEARCH_ENABLED %}checked="checked"{% endif %}></dd>
+</dl>
+<dl>
+<dt><label for="acme_aisearch_base_url">{{ lang('ACP_AISEARCH_BASE_URL') }}</label></dt>
+<dd><input type="text" id="acme_aisearch_base_url" name="acme_aisearch_base_url" value="{{ ACME_AISEARCH_BASE_URL }}" size="80"></dd>
+</dl>
+<dl>
+<dt><label for="acme_aisearch_client_id">{{ lang('ACP_AISEARCH_CLIENT_ID') }}</label></dt>
+<dd><input type="text" id="acme_aisearch_client_id" name="acme_aisearch_client_id" value="{{ ACME_AISEARCH_CLIENT_ID }}" size="40"></dd>
+</dl>
+<dl>
+<dt><label for="acme_aisearch_shared_secret">{{ lang('ACP_AISEARCH_SHARED_SECRET') }}</label></dt>
+<dd><input type="password" id="acme_aisearch_shared_secret" name="acme_aisearch_shared_secret" value="{{ ACME_AISEARCH_SHARED_SECRET }}" size="60"></dd>
+</dl>
+<dl>
+<dt><label for="acme_aisearch_timeout_ms">{{ lang('ACP_AISEARCH_TIMEOUT_MS') }}</label></dt>
+<dd><input type="number" id="acme_aisearch_timeout_ms" name="acme_aisearch_timeout_ms" value="{{ ACME_AISEARCH_TIMEOUT_MS }}" min="100" step="100"></dd>
+</dl>
+<dl>
+<dt><label for="acme_aisearch_top_k">{{ lang('ACP_AISEARCH_TOP_K') }}</label></dt>
+<dd><input type="number" id="acme_aisearch_top_k" name="acme_aisearch_top_k" value="{{ ACME_AISEARCH_TOP_K }}" min="1" max="50"></dd>
+</dl>
+</fieldset>
+<fieldset class="submit-buttons">
+<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />
+<input class="button2" type="submit" id="health_check" name="health_check" value="{{ lang('ACP_AISEARCH_HEALTH_CHECK') }}" />
+{{ S_FORM_TOKEN }}
+</fieldset>
+</form>
+
+<form id="acme_aisearch_test" method="post" action="{{ U_ACTION }}">
+<fieldset>
+<legend>{{ lang('ACP_AISEARCH_TEST_SEARCH') }}</legend>
+<dl>
+<dt><label for="acme_aisearch_test_query">{{ lang('ACP_AISEARCH_TEST_QUERY') }}</label></dt>
+<dd>
+<input type="text" id="acme_aisearch_test_query" name="acme_aisearch_test_query" value="{{ AISEARCH_TEST_QUERY }}" size="80">
+<br><span class="explain">{{ lang('ACP_AISEARCH_TEST_QUERY_EXPLAIN') }}</span>
+</dd>
+</dl>
+</fieldset>
+<fieldset class="submit-buttons">
+<input class="button1" type="submit" id="test_search" name="test_search" value="{{ lang('ACP_AISEARCH_RUN_TEST') }}" />
+{{ S_FORM_TOKEN }}
+</fieldset>
+
+{% if S_AISEARCH_TEST_RAN %}
+<fieldset>
+{% if AISEARCH_TEST_ERROR %}
+<div class="errorbox"><p>{{ lang('ACP_AISEARCH_TEST_ERROR', AISEARCH_TEST_ERROR) }}</p></div>
+{% elseif not test_results|length %}
+<p>{{ lang('ACP_AISEARCH_TEST_NO_RESULTS') }}</p>
+{% else %}
+<legend>{{ lang('ACP_AISEARCH_TEST_RESULTS', AISEARCH_TEST_COUNT) }}</legend>
+<table class="table1" style="width:100%">
+<thead>
+<tr>
+<th>{{ lang('TITLE') }}</th>
+<th>{{ lang('ACP_AISEARCH_TEST_RESULT_SCORE') }}</th>
+<th>URL</th>
+<th>{{ lang('DESCRIPTION') }}</th>
+</tr>
+</thead>
+<tbody>
+{% for row in test_results %}
+<tr>
+<td><strong>{{ row.TITLE }}</strong></td>
+<td>{{ row.SCORE }}</td>
+<td><a href="{{ row.URL }}" target="_blank" rel="noopener">{{ row.URL }}</a></td>
+<td>{{ row.SNIPPET }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% endif %}
+</fieldset>
+{% endif %}
+</form>
+
+<form id="acme_aisearch_index_mgmt" method="post" action="{{ U_ACTION }}">
+<fieldset>
+<legend>{{ lang('ACP_AISEARCH_INDEX_MGMT') }}</legend>
+<table class="table1" style="width:100%">
+<tbody>
+<tr>
+<th style="width:55%">{{ lang('ACP_AISEARCH_STATS_TOTAL_POSTS') }}</th>
+<td><strong>{{ AISEARCH_TOTAL_POSTS }}</strong></td>
+</tr>
+<tr>
+<th>{{ lang('ACP_AISEARCH_STATS_PROGRESS') }}</th>
+<td><strong>{{ AISEARCH_PROGRESS_DONE }} / {{ AISEARCH_TOTAL_POSTS }} ({{ AISEARCH_PROGRESS_PERCENT }}%)</strong></td>
+</tr>
+<tr>
+<th>{{ lang('ACP_AISEARCH_STATS_QUEUE_DONE') }}</th>
+<td><strong style="color:green">{{ AISEARCH_QUEUE_DONE }}</strong></td>
+</tr>
+<tr>
+<th>{{ lang('ACP_AISEARCH_STATS_QUEUE_PENDING') }}</th>
+<td><strong style="color:darkorange">{{ AISEARCH_QUEUE_PENDING }}</strong></td>
+</tr>
+<tr>
+<th>{{ lang('ACP_AISEARCH_STATS_QUEUE_FAILED') }}</th>
+<td><strong style="color:red">{{ AISEARCH_QUEUE_FAILED }}</strong></td>
+</tr>
+</tbody>
+</table>
+<dl>
+<dt></dt>
+<dd>
+<span class="explain">{{ lang('ACP_AISEARCH_PURGE_INDEX_EXPLAIN') }}</span><br>
+<span class="explain">{{ lang('ACP_AISEARCH_QUEUE_REINDEX_EXPLAIN') }}</span><br>
+<span class="explain">{{ lang('ACP_AISEARCH_FLUSH_QUEUE_EXPLAIN') }}</span><br>
+<span class="explain">{{ lang('ACP_AISEARCH_STOP_QUEUE_EXPLAIN') }}</span>
+</dd>
+</dl>
+</fieldset>
+<fieldset class="submit-buttons">
+<input class="button2" type="submit" name="purge_index"    value="{{ lang('ACP_AISEARCH_PURGE_INDEX') }}"    onclick="return confirm('This will wipe the entire Java index. Are you sure?')" />
+<input class="button1" type="submit" name="queue_reindex"  value="{{ lang('ACP_AISEARCH_QUEUE_REINDEX') }}" onclick="return confirm('This will queue ALL forum posts for re-indexing. Continue?')" />
+<input class="button2" type="submit" name="flush_queue"    value="{{ lang('ACP_AISEARCH_FLUSH_QUEUE') }}" />
+<input class="button2" type="submit" name="stop_queue"     value="{{ lang('ACP_AISEARCH_STOP_QUEUE') }}" onclick="return confirm('This will release currently processing queue rows back to NEW. Continue?')" />
+{{ S_FORM_TOKEN }}
+</fieldset>
+</form>
+
+{% INCLUDE 'overall_footer.html' %}
