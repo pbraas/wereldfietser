@@ -68,12 +68,37 @@ class acp_controller
 			}
 			if (empty($errors))
 			{
+				$search_mode = $this->request->variable('acme_aisearch_search_mode', 'lexical');
+				if (!in_array($search_mode, ['lexical', 'hybrid'], true))
+				{
+					$search_mode = 'lexical';
+				}
+
+				$semantic_strategy = $this->request->variable('acme_aisearch_semantic_strategy', 'proxy');
+				if (!in_array($semantic_strategy, ['proxy', 'embedding'], true))
+				{
+					$semantic_strategy = 'proxy';
+				}
+
+				$hybrid_alpha = (float) $this->request->variable('acme_aisearch_hybrid_alpha', 0.35);
+				$hybrid_alpha = max(0.0, min(1.0, $hybrid_alpha));
+
+				$semantic_top_k = (int) $this->request->variable('acme_aisearch_semantic_top_k', 50);
+				$semantic_top_k = max(1, min(200, $semantic_top_k));
+
 				$this->config->set('acme_aisearch_enabled',       $this->request->variable('acme_aisearch_enabled', 0));
 				$this->config->set('acme_aisearch_base_url',      $this->request->variable('acme_aisearch_base_url', '', true));
 				$this->config->set('acme_aisearch_client_id',     $this->request->variable('acme_aisearch_client_id', '', true));
 				$this->config->set('acme_aisearch_shared_secret', $this->request->variable('acme_aisearch_shared_secret', '', true));
 				$this->config->set('acme_aisearch_timeout_ms',    $this->request->variable('acme_aisearch_timeout_ms', 3000));
 				$this->config->set('acme_aisearch_top_k',         $this->request->variable('acme_aisearch_top_k', 10));
+				$this->config->set('acme_aisearch_search_mode',   $search_mode);
+				$this->config->set('acme_aisearch_semantic_enabled', $this->request->variable('acme_aisearch_semantic_enabled', 0));
+				$this->config->set('acme_aisearch_hybrid_alpha',  number_format($hybrid_alpha, 2, '.', ''));
+				$this->config->set('acme_aisearch_semantic_top_k', $semantic_top_k);
+				$this->config->set('acme_aisearch_semantic_strategy', $semantic_strategy);
+				$this->config->set('acme_aisearch_embedding_query_enabled', $this->request->variable('acme_aisearch_embedding_query_enabled', 0));
+				$this->config->set('acme_aisearch_embedding_index_enabled', $this->request->variable('acme_aisearch_embedding_index_enabled', 0));
 				$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_ACP_AISEARCH_SETTINGS');
 				trigger_error($this->language->lang('ACP_AISEARCH_SETTING_SAVED') . adm_back_link($this->u_action));
 			}
@@ -267,6 +292,13 @@ class acp_controller
 			'ACME_AISEARCH_SHARED_SECRET' => (string) $this->config['acme_aisearch_shared_secret'],
 			'ACME_AISEARCH_TIMEOUT_MS'    => (int)    $this->config['acme_aisearch_timeout_ms'],
 			'ACME_AISEARCH_TOP_K'         => (int)    $this->config['acme_aisearch_top_k'],
+			'ACME_AISEARCH_SEARCH_MODE'   => (string) (isset($this->config['acme_aisearch_search_mode']) ? $this->config['acme_aisearch_search_mode'] : 'lexical'),
+			'ACME_AISEARCH_SEMANTIC_ENABLED' => (bool) (isset($this->config['acme_aisearch_semantic_enabled']) ? $this->config['acme_aisearch_semantic_enabled'] : 0),
+			'ACME_AISEARCH_HYBRID_ALPHA'  => (float)  (isset($this->config['acme_aisearch_hybrid_alpha']) ? $this->config['acme_aisearch_hybrid_alpha'] : 0.35),
+			'ACME_AISEARCH_SEMANTIC_TOP_K' => (int)   (isset($this->config['acme_aisearch_semantic_top_k']) ? $this->config['acme_aisearch_semantic_top_k'] : 50),
+			'ACME_AISEARCH_SEMANTIC_STRATEGY' => (string) (isset($this->config['acme_aisearch_semantic_strategy']) ? $this->config['acme_aisearch_semantic_strategy'] : 'proxy'),
+			'ACME_AISEARCH_EMBEDDING_QUERY_ENABLED' => (bool) (isset($this->config['acme_aisearch_embedding_query_enabled']) ? $this->config['acme_aisearch_embedding_query_enabled'] : 0),
+			'ACME_AISEARCH_EMBEDDING_INDEX_ENABLED' => (bool) (isset($this->config['acme_aisearch_embedding_index_enabled']) ? $this->config['acme_aisearch_embedding_index_enabled'] : 0),
 			// Index stats
 			'AISEARCH_TOTAL_POSTS'        => $total_posts,
 			'AISEARCH_QUEUE_PENDING'      => $queue_pending,

@@ -39,6 +39,61 @@
 <dt><label for="acme_aisearch_top_k">{{ lang('ACP_AISEARCH_TOP_K') }}</label></dt>
 <dd><input type="number" id="acme_aisearch_top_k" name="acme_aisearch_top_k" value="{{ ACME_AISEARCH_TOP_K }}" min="1" max="50"></dd>
 </dl>
+<dl>
+<dt><label for="acme_aisearch_search_mode">{{ lang('ACP_AISEARCH_SEARCH_MODE') }}</label></dt>
+<dd>
+<select id="acme_aisearch_search_mode" name="acme_aisearch_search_mode">
+<option value="lexical" {% if ACME_AISEARCH_SEARCH_MODE == 'lexical' %}selected="selected"{% endif %}>{{ lang('ACP_AISEARCH_SEARCH_MODE_LEXICAL') }}</option>
+<option value="hybrid" {% if ACME_AISEARCH_SEARCH_MODE == 'hybrid' %}selected="selected"{% endif %}>{{ lang('ACP_AISEARCH_SEARCH_MODE_HYBRID') }}</option>
+</select>
+<br><span class="explain">{{ lang('ACP_AISEARCH_SEARCH_MODE_EXPLAIN') }}</span>
+</dd>
+</dl>
+<dl>
+<dt><label for="acme_aisearch_semantic_enabled">{{ lang('ACP_AISEARCH_SEMANTIC_ENABLED') }}</label></dt>
+<dd>
+<input type="checkbox" id="acme_aisearch_semantic_enabled" name="acme_aisearch_semantic_enabled" value="1" {% if ACME_AISEARCH_SEMANTIC_ENABLED %}checked="checked"{% endif %}>
+<br><span class="explain">{{ lang('ACP_AISEARCH_SEMANTIC_ENABLED_EXPLAIN') }}</span>
+</dd>
+</dl>
+<dl>
+<dt><label for="acme_aisearch_hybrid_alpha">{{ lang('ACP_AISEARCH_HYBRID_ALPHA') }}</label></dt>
+<dd>
+<input type="number" id="acme_aisearch_hybrid_alpha" name="acme_aisearch_hybrid_alpha" value="{{ ACME_AISEARCH_HYBRID_ALPHA }}" min="0" max="1" step="0.05">
+<br><span class="explain">{{ lang('ACP_AISEARCH_HYBRID_ALPHA_EXPLAIN') }}</span>
+</dd>
+</dl>
+<dl>
+<dt><label for="acme_aisearch_semantic_top_k">{{ lang('ACP_AISEARCH_SEMANTIC_TOP_K') }}</label></dt>
+<dd>
+<input type="number" id="acme_aisearch_semantic_top_k" name="acme_aisearch_semantic_top_k" value="{{ ACME_AISEARCH_SEMANTIC_TOP_K }}" min="1" max="200">
+<br><span class="explain">{{ lang('ACP_AISEARCH_SEMANTIC_TOP_K_EXPLAIN') }}</span>
+</dd>
+</dl>
+<dl>
+<dt><label for="acme_aisearch_semantic_strategy">{{ lang('ACP_AISEARCH_SEMANTIC_STRATEGY') }}</label></dt>
+<dd>
+<select id="acme_aisearch_semantic_strategy" name="acme_aisearch_semantic_strategy">
+<option value="proxy" {% if ACME_AISEARCH_SEMANTIC_STRATEGY == 'proxy' %}selected="selected"{% endif %}>{{ lang('ACP_AISEARCH_SEMANTIC_STRATEGY_PROXY') }}</option>
+<option value="embedding" {% if ACME_AISEARCH_SEMANTIC_STRATEGY == 'embedding' %}selected="selected"{% endif %}>{{ lang('ACP_AISEARCH_SEMANTIC_STRATEGY_EMBEDDING') }}</option>
+</select>
+<br><span class="explain">{{ lang('ACP_AISEARCH_SEMANTIC_STRATEGY_EXPLAIN') }}</span>
+</dd>
+</dl>
+<dl>
+<dt><label for="acme_aisearch_embedding_index_enabled">{{ lang('ACP_AISEARCH_EMBEDDING_INDEX_ENABLED') }}</label></dt>
+<dd>
+<input type="checkbox" id="acme_aisearch_embedding_index_enabled" name="acme_aisearch_embedding_index_enabled" value="1" {% if ACME_AISEARCH_EMBEDDING_INDEX_ENABLED %}checked="checked"{% endif %}>
+<br><span class="explain">{{ lang('ACP_AISEARCH_EMBEDDING_INDEX_ENABLED_EXPLAIN') }}</span>
+</dd>
+</dl>
+<dl>
+<dt><label for="acme_aisearch_embedding_query_enabled">{{ lang('ACP_AISEARCH_EMBEDDING_QUERY_ENABLED') }}</label></dt>
+<dd>
+<input type="checkbox" id="acme_aisearch_embedding_query_enabled" name="acme_aisearch_embedding_query_enabled" value="1" {% if ACME_AISEARCH_EMBEDDING_QUERY_ENABLED %}checked="checked"{% endif %}>
+<br><span class="explain">{{ lang('ACP_AISEARCH_EMBEDDING_QUERY_ENABLED_EXPLAIN') }}</span>
+</dd>
+</dl>
 </fieldset>
 <fieldset class="submit-buttons">
 <input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />
