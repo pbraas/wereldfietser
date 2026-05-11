@@ -1,0 +1,11 @@
+Subject: {BOARDRULES_NOTIFICATION}
+
+Hello,
+
+{BOARDRULES_NOTIFICATION}
+
+If you want to review the updated board rules, click the following link:
+{U_BOARD_RULES}
+
+{EMAIL_SIG}
+

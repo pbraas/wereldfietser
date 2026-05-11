@@ -45,7 +45,7 @@ class boardrules extends \phpbb\notification\type\base
 	 */
 	public function is_available()
 	{
-		return false;
+		return true;
 	}
 
 	/**
@@ -117,7 +117,7 @@ class boardrules extends \phpbb\notification\type\base
 	 */
 	public function get_email_template()
 	{
-		return false;
+		return '@phpbb_boardrules/boardrules';
 	}
 
 	/**
@@ -125,7 +125,10 @@ class boardrules extends \phpbb\notification\type\base
 	 */
 	public function get_email_template_variables()
 	{
-		return array();
+		return array(
+			'BOARDRULES_NOTIFICATION' => $this->language->lang('BOARDRULES_NOTIFICATION'),
+			'U_BOARD_RULES' => $this->get_url(),
+		);
 	}
 
 	/**
