@@ -1,0 +1,9 @@
+# OS noise
+Desktop.ini
+desktop.ini
+# Editor/IDE
+.idea/
+.vscode/
+# Logs/temp
+*.log
+*.tmp
