@@ -56,8 +56,7 @@ class main_listener implements EventSubscriberInterface
 			'core.page_header'							=> 'add_page_header_link',
 			'core.viewonline_overwrite_location'		=> 'viewonline_page',
 			'core.user_change_name'						=> 'on_user_change_name',
-			'core.ucp_profile_validate_profile_info_after'	=> 'prevent_password_change_for_linked_accounts',
-			'core.ucp_profile_info_validate_data_before'	=> 'prevent_username_change_for_linked_accounts',
+			'core.ucp_profile_reg_details_validate'	=> 'prevent_password_and_username_change_for_linked_accounts',
 		];
 	}
 
@@ -179,11 +178,11 @@ class main_listener implements EventSubscriberInterface
 	}
 
 	/**
-	 * Prevent password changes for users linked to Wereldfietser account
+	 * Prevent password and username changes for users linked to Wereldfietser account
 	 *
 	 * @param \phpbb\event\data	$event	Event object
 	 */
-	public function prevent_password_change_for_linked_accounts($event)
+	public function prevent_password_and_username_change_for_linked_accounts($event)
 	{
 		$user_id = (int) $this->user->data['user_id'];
 
@@ -199,44 +198,20 @@ class main_listener implements EventSubscriberInterface
 		if (!$wereldfietser_id) {
 			return;
 		}
+
+		$data = $event['data'];
+		$error = $event['error'];
 
 		// Check if password was changed (new_password field is not empty)
-		$data = $event['data'];
 		if (!empty($data['new_password']) || (isset($data['cur_password']) && !empty($data['cur_password']))) {
-			$error = $event['error'];
 			$error[] = $this->language->lang('PASSWORD_CHANGE_NOT_ALLOWED_LINKED_ACCOUNT');
-			$event['error'] = $error;
-		}
-	}
-
-	/**
-	 * Prevent username changes for users linked to Wereldfietser account
-	 *
-	 * @param \phpbb\event\data	$event	Event object
-	 */
-	public function prevent_username_change_for_linked_accounts($event)
-	{
-		$user_id = (int) $this->user->data['user_id'];
-
-		// Get the user's Wereldfietser ID from profile fields
-		$sql = 'SELECT pf_wereldfietser_id FROM ' . PROFILE_FIELDS_DATA_TABLE . ' WHERE user_id = ' . (int) $user_id;
-		$result = $this->db->sql_query($sql);
-		$pf_row = $this->db->sql_fetchrow($result);
-		$this->db->sql_freeresult($result);
-
-		$wereldfietser_id = ($pf_row && !empty($pf_row['pf_wereldfietser_id'])) ? $pf_row['pf_wereldfietser_id'] : null;
-
-		// Only restrict if user is linked to a Wereldfietser account
-		if (!$wereldfietser_id) {
-			return;
 		}
 
 		// Check if username was changed (username field differs from current username)
-		$data = $event['data'];
 		if (isset($data['username']) && $data['username'] !== $this->user->data['username']) {
-			$error = $event['error'];
 			$error[] = $this->language->lang('USERNAME_CHANGE_NOT_ALLOWED_LINKED_ACCOUNT');
-			$event['error'] = $error;
 		}
+
+		$event['error'] = $error;
 	}
 }
