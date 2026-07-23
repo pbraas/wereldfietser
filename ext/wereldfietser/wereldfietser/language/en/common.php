@@ -10,8 +10,12 @@ if (empty($lang) || !is_array($lang)) {
 
 $lang = array_merge($lang, array(
     'WERELDFIETSER_ID'                              => 'Wereldfietser ID',
+    'WERELDFIETSER_PAGE'                            => 'Wereldfietser',
+    'WERELDFIETSER_LOGIN_MEMBERS'                   => 'Log in for WF members',
+    'VIEWING_WERELDFIETSER_WERELDFIETSER'           => 'Viewing Wereldfietser',
     'PHP_CURL_NOT_INSTALLED'                        => 'The cURL extension for PHP is required for the API authentication provider to work. Please enable it in your php.ini file and restart your web server.',
     'EXTERNAL_AUTH_INVALID_RESPONSE'                => 'The authentication server returned an invalid response. Please contact the board administrator.',
+      'NO_USERNAME_OR_PASSWORD'                       => 'You must specify both a username and a password.',
     'LOGIN_ERROR_EMAIL_NOT_ALLOWED'                 => 'Logging in with an email address is not allowed. Please use your username. If your username is an email address, please change it on <a href="https://wereldfietser.nl">wereldfietser.nl</a> first.',
     'LOGIN_ERROR_USERNAME_TAKEN_BY_OTHER_ACCOUNT'   => 'You are trying to log in with an account whose username is already in use by another account on this forum. Please contact the administrator to resolve this issue.',
     'WERELDFIETSER_LINK_ACCOUNT'                    => 'You have the same username as someone on the forum. Do you want to link these accounts? If yes, follow the instructions on the next page. If no, change your username on wereldfietser.nl to a username that does not yet exist on the forum.',
@@ -22,4 +26,6 @@ $lang = array_merge($lang, array(
     'YOUR_PASSWORD'                                 => 'Your Forum Password',
     'WERELDFIETSER_MERGE_ID_MISMATCH'               => 'The Wereldfietser ID you entered does not match the one from your login attempt. Please go back and try again.',
     'WERELDFIETSER_MERGE_INVALID_PASSWORD'          => 'The password you entered for your forum account is incorrect.',
+    'PASSWORD_CHANGE_NOT_ALLOWED_LINKED_ACCOUNT'    => 'Password changes are managed by Wereldfietser. Please update your password on <a href="https://wereldfietser.nl">wereldfietser.nl</a>',
+    'USERNAME_CHANGE_NOT_ALLOWED_LINKED_ACCOUNT'    => 'Username changes are managed by Wereldfietser. Please update your username on <a href="https://wereldfietser.nl">wereldfietser.nl</a>',
 ));

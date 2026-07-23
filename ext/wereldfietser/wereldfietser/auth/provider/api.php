@@ -75,6 +75,7 @@ class api implements provider_interface
         }
 
         if (!$username || !$password) {
+              $this->language->add_lang('common', 'wereldfietser/wereldfietser');
             return [
                 'status'    => LOGIN_ERROR_USERNAME,
                 'error_msg' => 'NO_USERNAME_OR_PASSWORD',
@@ -123,25 +124,28 @@ class api implements provider_interface
                 $wereldfietser_uid = $api_user['uid'];
                 $wereldfietser_id = $api_user['id'];
 
-                // --- NEW CHECK: Verify Active Membership ---
-                if (!$this->check_membership_status($wereldfietser_id)) {
-                    // Log membership failure
-                    $this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'API_MEMBERSHIP_CHECK_FAILED', false, ["User: $username"]);
+                        // Do not gate login/linking on the external membership check.
+                        // This allows existing phpBB users to reach the account connect flow.
 
-                    // User is NOT an active member.
-                    // Try to find the local user and remove them from the group.
-                    $sql = 'SELECT user_id FROM ' . USERS_TABLE . " WHERE username_clean = '" . $this->db->sql_escape(utf8_clean_string($wereldfietser_uid)) . "'";
-                    $result = $this->db->sql_query($sql);
-                    $user_row = $this->db->sql_fetchrow($result);
-                    $this->db->sql_freeresult($result);
+                // Resolve by linked external ID first. This prevents unnecessary
+                // merge prompts when the API uid differs from the local username.
+                $sql = 'SELECT u.*
+                    FROM ' . USERS_TABLE . ' u
+                    INNER JOIN ' . PROFILE_FIELDS_DATA_TABLE . ' pfd ON pfd.user_id = u.user_id
+                    WHERE pfd.pf_wereldfietser_id = \'' . $this->db->sql_escape((string) $wereldfietser_id) . '\'';
+                $result = $this->db->sql_query_limit($sql, 1);
+                $linked_user_row = $this->db->sql_fetchrow($result);
+                $this->db->sql_freeresult($result);
 
-                    if ($user_row) {
-                        $this->remove_member_group($user_row['user_id']);
-                    }
+                if ($linked_user_row) {
+                    $this->assign_member_group((int) $linked_user_row['user_id']);
 
-                    return $this->db_provider->login($username, $password);
+                    return [
+                        'status'    => LOGIN_SUCCESS,
+                        'error_msg' => false,
+                        'user_row'  => $linked_user_row,
+                    ];
                 }
-                // -------------------------------------------
 
                 // Check if a phpBB user with this username already exists
                 $sql = 'SELECT * FROM ' . USERS_TABLE . " WHERE username_clean = '" . $this->db->sql_escape(utf8_clean_string($wereldfietser_uid)) . "'";
@@ -287,7 +291,7 @@ class api implements provider_interface
         }
     }
 
-    private function check_membership_status($wereldfietser_id)
+    public function check_membership_status($wereldfietser_id)
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->api_check_url . $wereldfietser_id);
@@ -343,7 +347,7 @@ class api implements provider_interface
         }
     }
 
-    private function remove_member_group($user_id)
+    public function remove_member_group($user_id)
     {
         if (!function_exists('group_user_del')) {
             include($this->phpbb_root_path . 'includes/functions_user.' . $this->php_ext);

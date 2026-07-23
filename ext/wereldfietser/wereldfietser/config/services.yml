@@ -68,9 +68,13 @@ services:
         class: wereldfietser\wereldfietser\event\main_listener
         arguments:
             - '@language'
+            - '@dbal.conn'
+            - '@user'
             - '@controller.helper'
             - '@template'
             - '%core.php_ext%'
+            - '@auth.provider.api'
+            - '%core.root_path%'
         tags:
             - { name: event.listener }
 
