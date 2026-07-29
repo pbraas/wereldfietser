@@ -47,10 +47,7 @@ class merge_controller
     /** @var cp_manager */
     protected $cp_manager;
 
-    /** @var string */
-    protected $phpbb_root_path;
-
-    public function __construct(config $config, driver_interface $db, request $request, template $template, user $user, log $log, manager $passwords_manager, helper $helper, language $language, $php_ext, cp_manager $cp_manager, $phpbb_root_path)
+    public function __construct(config $config, driver_interface $db, request $request, template $template, user $user, log $log, manager $passwords_manager, helper $helper, language $language, $php_ext, cp_manager $cp_manager)
     {
         $this->config = $config;
         $this->db = $db;
@@ -63,7 +60,6 @@ class merge_controller
         $this->language = $language;
         $this->php_ext = $php_ext;
         $this->cp_manager = $cp_manager;
-        $this->phpbb_root_path = $phpbb_root_path;
     }
 
     public function handle()
@@ -123,13 +119,45 @@ class merge_controller
         // Update the profile field using the manager
         $this->cp_manager->update_profile_field_data($user_id, ['pf_wereldfietser_id' => $wereldfietser_id]);
 
-        // --- ASSIGN GROUP ---
-        $this->assign_member_group($user_id);
-        // --------------------
+        // Randomise the phpBB password so the user can no longer log in with their
+        // old forum password. They can still use "Forgot password" to regain access
+        // if they ever cancel their wereldfietser.nl membership.
+        $random_password = bin2hex(random_bytes(16));
+        $hashed_password = $this->passwords_manager->hash($random_password);
+        $this->db->sql_query('UPDATE ' . USERS_TABLE . " SET user_password = '" . $this->db->sql_escape($hashed_password) . "' WHERE user_id = " . (int) $user_id);
+
+        // Add user to the Wereldfietser group
+        $sql = 'SELECT group_id FROM ' . GROUPS_TABLE . " WHERE group_name = 'Wereldfietser' LIMIT 1";
+        $result = $this->db->sql_query($sql);
+        $group_row = $this->db->sql_fetchrow($result);
+        $this->db->sql_freeresult($result);
+
+        if ($group_row) {
+            $wereldfietser_group_id = (int) $group_row['group_id'];
+
+            // Check if already a member
+            $sql = 'SELECT user_id FROM ' . USER_GROUP_TABLE . ' WHERE group_id = ' . $wereldfietser_group_id . ' AND user_id = ' . (int) $user_id;
+            $result = $this->db->sql_query($sql);
+            $already_member = $this->db->sql_fetchrow($result);
+            $this->db->sql_freeresult($result);
+
+            if (!$already_member) {
+                $this->db->sql_query('INSERT INTO ' . USER_GROUP_TABLE . ' (group_id, user_id, group_leader, user_pending) VALUES (' . $wereldfietser_group_id . ', ' . (int) $user_id . ', 0, 0)');
+            }
+
+            // Set Wereldfietser as the user's default group
+            $this->db->sql_query('UPDATE ' . USERS_TABLE . ' SET group_id = ' . $wereldfietser_group_id . ' WHERE user_id = ' . (int) $user_id);
+        }
+
+        // Clear phpBB's cached permissions so the new group is picked up immediately
+        $this->db->sql_query('UPDATE ' . USERS_TABLE . " SET user_permissions = '' WHERE user_id = " . (int) $user_id);
+
+        // Delete old sessions so the new session gets fresh group permissions
+        $this->db->sql_query('DELETE FROM ' . SESSIONS_TABLE . ' WHERE session_user_id = ' . (int) $user_id);
 
         $this->log->add('user', $this->user->data['user_id'], $this->user->ip, 'WERELDFIETSER_MERGE_SUCCESS');
 
-        // Log the user in
+        // Log the user in with a fresh session
         $this->user->session_create($user_id, false, true, true);
         
         // Ensure script path ends with a slash
@@ -139,25 +167,5 @@ class merge_controller
         }
         
         redirect(append_sid($script_path . 'index.' . $this->php_ext));
-    }
-
-    private function assign_member_group($user_id)
-    {
-        if (!function_exists('group_user_add')) {
-            include($this->phpbb_root_path . 'includes/functions_user.' . $this->php_ext);
-        }
-
-        // Find the group ID
-        $sql = 'SELECT group_id FROM ' . GROUPS_TABLE . " WHERE group_name = '" . $this->db->sql_escape('Wereldfietser') . "'";
-        $result = $this->db->sql_query($sql);
-        $group_row = $this->db->sql_fetchrow($result);
-        $this->db->sql_freeresult($result);
-
-        if ($group_row) {
-            $group_id = (int) $group_row['group_id'];
-            
-            // Add user to group (false = not default group, false = not leader, false = not pending)
-            group_user_add($group_id, $user_id, false, false, false);
-        }
     }
 }

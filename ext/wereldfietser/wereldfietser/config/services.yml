@@ -12,7 +12,6 @@ services:
             - '%core.root_path%'
             - '%core.php_ext%'
             - '@auth.provider.db'
-            - '@log' # Added this line
         tags:
             - { name: auth.provider }
 
@@ -55,8 +54,7 @@ services:
             - '@controller.helper'
             - '@language'
             - '%core.php_ext%'
-            - '@profilefields.manager'
-            - '%core.root_path%'
+            - '@profilefields.manager' # Added this line
 
     wereldfietser.wereldfietser.service:
         class: wereldfietser\wereldfietser\service
@@ -68,13 +66,12 @@ services:
         class: wereldfietser\wereldfietser\event\main_listener
         arguments:
             - '@language'
-            - '@dbal.conn'
-            - '@user'
             - '@controller.helper'
             - '@template'
+            - '@dbal.conn'
+            - '@request'
+            - '@user'
             - '%core.php_ext%'
-            - '@auth.provider.api'
-            - '%core.root_path%'
         tags:
             - { name: event.listener }
 
